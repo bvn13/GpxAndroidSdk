@@ -4,6 +4,8 @@
 
 This is another one SDK for reading and writing (manipulating) GPX files.
 
+Official GPX format is on [topografix](https://www.topografix.com/GPX/1/1/) site.
+
 ## Changelog
 
 ### 2022-09-25
