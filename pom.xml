@@ -222,6 +222,28 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.jetbrains.dokka</groupId>
+                        <artifactId>dokka-maven-plugin</artifactId>
+                        <version>${dokka.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>dokka</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <dokkaPlugins>
+                                <plugin>
+                                    <groupId>org.jetbrains.dokka</groupId>
+                                    <artifactId>kotlin-as-java-plugin</artifactId>
+                                    <version>${dokka.version}</version>
+                                </plugin>
+                            </dokkaPlugins>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <executions>
