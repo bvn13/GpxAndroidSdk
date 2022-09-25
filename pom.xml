@@ -146,7 +146,7 @@
                 <version>${dokka.version}</version>
                 <executions>
                     <execution>
-                        <phase>pre-site</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>dokka</goal>
                         </goals>
@@ -227,7 +227,7 @@
                         <version>${dokka.version}</version>
                         <executions>
                             <execution>
-                                <phase>pre-site</phase>
+                                <phase>process-resources</phase>
                                 <goals>
                                     <goal>dokka</goal>
                                 </goals>
