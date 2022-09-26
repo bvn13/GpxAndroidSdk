@@ -6,7 +6,7 @@
 
     <artifactId>GpxAndroidSdk</artifactId>
     <groupId>me.bvn13.sdk.android.gpx</groupId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -35,6 +35,7 @@
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <gitflow-maven-plugin.version>1.18.0</gitflow-maven-plugin.version>
+        <maven-jar.version>3.3.0</maven-jar.version>
         <!-- dependencies -->
         <kotlin-junit.version>1.7.10</kotlin-junit.version>
         <jupiter.version>5.8.2</jupiter.version>
@@ -124,7 +125,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>
@@ -154,6 +155,16 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <jdkVersion>8</jdkVersion>
+                    <perPackageOptions>
+                        <packageOption>
+                            <matchingRegex>com\..*</matchingRegex>
+                            <includeNonPublic>true</includeNonPublic>
+                        </packageOption>
+                    </perPackageOptions>
+                    <sourceDirectories>
+                        <dir>${project.basedir}/src/main/kotlin</dir>
+                    </sourceDirectories>
                     <dokkaPlugins>
                         <plugin>
                             <groupId>org.jetbrains.dokka</groupId>
@@ -161,6 +172,43 @@
                             <version>${dokka.version}</version>
                         </plugin>
                     </dokkaPlugins>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>dokka-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>javadoc</classifier>
+                            <classesDirectory>${project.build.directory}/dokka</classesDirectory>
+                            <skipIfEmpty>true</skipIfEmpty>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
@@ -235,6 +283,16 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <jdkVersion>8</jdkVersion>
+                            <perPackageOptions>
+                                <packageOption>
+                                    <matchingRegex>com\..*</matchingRegex>
+                                    <includeNonPublic>true</includeNonPublic>
+                                </packageOption>
+                            </perPackageOptions>
+                            <sourceDirectories>
+                                <dir>${project.basedir}/src/main/kotlin</dir>
+                            </sourceDirectories>
                             <dokkaPlugins>
                                 <plugin>
                                     <groupId>org.jetbrains.dokka</groupId>
@@ -242,6 +300,43 @@
                                     <version>${dokka.version}</version>
                                 </plugin>
                             </dokkaPlugins>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${maven-jar.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>dokka-jar</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <classifier>javadoc</classifier>
+                                    <classesDirectory>${project.build.directory}/dokka</classesDirectory>
+                                    <skipIfEmpty>true</skipIfEmpty>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                </manifest>
+                                <manifestEntries>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Specification-Version>${project.version}</Specification-Version>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
                         </configuration>
                     </plugin>
                     <plugin>
