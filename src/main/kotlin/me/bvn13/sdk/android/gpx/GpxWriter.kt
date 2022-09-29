@@ -195,7 +195,7 @@ fun TrksegType.toXmlString() = """
     </trkseg>
 """.trim().removeEmptyStrings()
 
-fun List<WptType>.toXmlString(nodeName: String?) = this.joinToString(prefix = "\n", postfix = "", separator = "") {
+fun List<WptType>.toXmlString(nodeName: String?) = this.joinToString(prefix = "\n", postfix = "", separator = "\n") {
     it.toXmlString(nodeName)
 }
 

@@ -319,6 +319,49 @@ class GpxWriterTest {
                                             parameters = mapOf(Pair("aa", "bb"), Pair("cc", "dd"))
                                         )
                                     )
+                                ),
+                                WptType(
+                                    lat = 14.64736838389662,
+                                    lon = 7.93212890625,
+                                    ele = 10.toDouble(),
+                                    time = OffsetDateTime.now(clock),
+                                    magvar = 3.toDouble(),
+                                    geoidheight = 45.toDouble(),
+                                    name = "test point 1",
+                                    cmt = "comment 1",
+                                    desc = "description of point 1",
+                                    link = listOf(
+                                        LinkType(
+                                            href = "http://link-to.site.href",
+                                            text = "text",
+                                            type = "hyperlink"
+                                        ),
+                                        LinkType(
+                                            href = "http://link2-to.site.href",
+                                            text = "text2",
+                                            type = "hyperlink2"
+                                        )
+                                    ),
+                                    src = "source 1",
+                                    sym = "sym 1",
+                                    type = "type 1",
+                                    fix = FixType.DGPS,
+                                    sat = 1,
+                                    hdop = 55.toDouble(),
+                                    vdop = 66.toDouble(),
+                                    pdop = 77.toDouble(),
+                                    ageofgpsdata = 44,
+                                    dgpsid = 88,
+                                    extensions = listOf(
+                                        ExtensionType(
+                                            "extension1",
+                                            parameters = mapOf(Pair("first", "second"), Pair("third", "fours"))
+                                        ),
+                                        ExtensionType(
+                                            "extension2",
+                                            parameters = mapOf(Pair("aa", "bb"), Pair("cc", "dd"))
+                                        )
+                                    )
                                 )
                             )
                         )
@@ -429,6 +472,37 @@ class GpxWriterTest {
             <number>1234</number>
             <type>type 1</type>
             <trkseg>
+            <trkpt lat="14.64736838389662" lon="7.93212890625">
+            <ele>10.0</ele>
+            <time>2022-09-24T15:04:00+03:00</time>
+            <magvar>3.0</magvar>
+            <geoidheight>45.0</geoidheight>
+            <name>test point 1</name>
+            <cmt>comment 1</cmt>
+            <desc>description of point 1</desc>
+            <src>source 1</src>
+            <link href="http://link-to.site.href">
+            <text>text</text>
+            <type>hyperlink</type>
+            </link>
+            <link href="http://link2-to.site.href">
+            <text>text2</text>
+            <type>hyperlink2</type>
+            </link>
+            <sym>sym 1</sym>
+            <type>type 1</type>
+            <fix>dgps</fix>
+            <sat>1</sat>
+            <hdop>55.0</hdop>
+            <vdop>66.0</vdop>
+            <pdop>77.0</pdop>
+            <ageofgpsdata>44</ageofgpsdata>
+            <dgpsid>88</dgpsid>
+            <extensions>
+            <extension1 first="second" third="fours"></extension1>
+            <extension2 aa="bb" cc="dd"></extension2>
+            </extensions>
+            </trkpt>
             <trkpt lat="14.64736838389662" lon="7.93212890625">
             <ele>10.0</ele>
             <time>2022-09-24T15:04:00+03:00</time>
