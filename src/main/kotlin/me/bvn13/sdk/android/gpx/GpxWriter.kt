@@ -99,11 +99,11 @@ fun GpxType.toXmlString(clock: Clock?): String = """
     xsi:schemaLocation="$SCHEMA_LOCATION">
     <time>${now(clock)}</time>
     ${this.metadata.toXmlString()}
-    ${this.wpt?.toXmlString()}
-    ${this.rte?.toXmlString()}
-    ${this.trk?.toXmlString()}
+    ${this.wpt?.toXmlString() ?: ""}
+    ${this.rte?.toXmlString() ?: ""}
+    ${this.trk?.toXmlString() ?: ""}
     </gpx>
-""".trim()
+""".trim().removeEmptyStrings()
 
 fun MetadataType.toXmlString(): String = """
       <metadata>
@@ -113,16 +113,13 @@ fun MetadataType.toXmlString(): String = """
       <name>${this.authorName}</name>
       </author>
       </metadata>
-""".trim()
+""".trim().removeEmptyStrings()
 
-private fun now(clock: Clock?) = OffsetDateTime.now(clock ?: Clock.systemDefaultZone()).format(DTF)
-
-fun WptType.toXmlString(nodeName: String? = null) =
-    if (nodeName != null) {
-        this.toXmlString(nodeName)
-    } else {
-        this.toXmlString("wpt")
-    }
+fun WptType.toXmlString(nodeName: String? = null) = if (nodeName != null) {
+    this.toXmlString(nodeName)
+} else {
+    this.toXmlString("wpt")
+}
 
 @JvmName("toXmlStringNamed")
 fun WptType.toXmlString(nodeName: String) = """
@@ -135,19 +132,19 @@ fun WptType.toXmlString(nodeName: String) = """
     ${toXmlString(cmt, "cmt")}
     ${toXmlString(desc, "desc")}
     ${toXmlString(src, "src")}
-    ${link?.toXmlString()}
+    ${link?.toXmlString() ?: ""}
     ${toXmlString(sym, "sym")}
     ${toXmlString(type, "type")}
-    ${fix?.toXmlString()}
+    ${fix?.toXmlString() ?: ""}
     ${toXmlString(sat, "sat")}
     ${toXmlString(hdop, "hdop")}
     ${toXmlString(vdop, "vdop")}
     ${toXmlString(pdop, "pdop")}
     ${toXmlString(ageofgpsdata, "ageofgpsdata")}
     ${toXmlString(dgpsid, "dgpsid")}
-    ${extensions?.toXmlString()}
+    ${extensions?.toXmlString() ?: ""}
     </${nodeName}>
-""".trim()
+""".trim().removeEmptyStrings()
 
 fun RteType.toXmlString() = """
     <rte>
@@ -155,13 +152,13 @@ fun RteType.toXmlString() = """
     ${toXmlString(this.cmt, "cmt")}
     ${toXmlString(this.desc, "desc")}
     ${toXmlString(this.src, "src")}
-    ${this.link?.toXmlString()}
+    ${this.link?.toXmlString() ?: ""}
     ${toXmlString(this.number, "number")}
     ${toXmlString(this.type, "type")}
-    ${this.extensions?.toXmlString()}
-    ${this.rtept?.toXmlString()}
+    ${this.extensions?.toXmlString() ?: ""}
+    ${this.rtept?.toXmlString() ?: ""}
     </rte>
-""".trim()
+""".trim().removeEmptyStrings()
 
 fun TrkType.toXmlString() = """
     <trk>
@@ -169,24 +166,47 @@ fun TrkType.toXmlString() = """
     ${toXmlString(this.cmt, "cmt")}
     ${toXmlString(this.desc, "desc")}
     ${toXmlString(this.src, "src")}
-    ${this.link?.toXmlString()}
+    ${this.link?.toXmlString() ?: ""}
     ${toXmlString(this.number, "number")}
     ${toXmlString(this.type, "type")}
-    ${this.extensions?.toXmlString()}
-    ${this.trkseg?.toXmlString()}
+    ${this.extensions?.toXmlString() ?: ""}
+    ${this.trkseg?.toXmlString() ?: ""}
     </trk>
-""".trim()
+""".trim().removeEmptyStrings()
 
-fun List<WptType>.toXmlString(nodeName: String?) =
-    this.joinToString(prefix = "", postfix = "", separator = "") {
-        it.toXmlString(nodeName)
-    }
+fun LinkType.toXmlString() = """
+    <link href="${this.href}">
+    <text>${this.text}</text>
+    <type>${this.type}</type>
+    </link>
+""".trim().removeEmptyStrings()
+
+fun FixType.toXmlString() = """
+    <fix>${this.value}</fix>
+""".trim().removeEmptyStrings()
+
+fun ExtensionType.toXmlString() = """
+        <${this.nodeName}${toXmlString(this.parameters)}>${this.value ?: ""}</${this.nodeName}>
+    """.trim().removeEmptyStrings()
+
+fun TrksegType.toXmlString() = """
+    <trkseg>
+    ${this.trkpt?.toXmlString("trkpt") ?: ""}
+    </trkseg>
+""".trim().removeEmptyStrings()
+
+fun List<WptType>.toXmlString(nodeName: String?) = this.joinToString(prefix = "\n", postfix = "", separator = "") {
+    it.toXmlString(nodeName)
+}
+
+fun List<ExtensionType>.toXmlString() = this.joinToString(
+    prefix = "<extensions>\n", postfix = "\n</extensions>", separator = "\n", transform = ExtensionType::toXmlString
+)
 
 @JvmName("toXmlStringWptType")
-fun List<WptType>.toXmlString() =
-    this.joinToString(prefix = "", postfix = "", separator = "") {
-        it.toXmlString()
-    }
+fun List<WptType>.toXmlString() = this.joinToString(prefix = "", postfix = "", separator = "") {
+    it.toXmlString()
+}
 
 @JvmName("toXmlStringLinkType")
 fun List<LinkType>.toXmlString() =
@@ -204,75 +224,41 @@ fun List<TrkType>.toXmlString() =
 fun List<TrksegType>.toXmlString() =
     this.joinToString(prefix = "", postfix = "", separator = "", transform = TrksegType::toXmlString)
 
-fun List<ExtensionType>.toXmlString() =
-    this.joinToString(
-        prefix = "<extensions>\n",
-        postfix = "\n</extensions>",
-        separator = "\n",
-        transform = ExtensionType::toXmlString
-    )
+fun toXmlString(value: String?, nodeName: String) = if (value != null) {
+    "<${nodeName}>${value}</${nodeName}>"
+} else {
+    ""
+}
 
-fun LinkType.toXmlString() = """
-    <link href="${this.href}">
-    <text>${this.text}</text>
-    <type>${this.type}</type>
-    </link>
-""".trim()
+fun toXmlString(value: Int?, nodeName: String) = if (value != null) {
+    "<${nodeName}>${value}</${nodeName}>"
+} else {
+    ""
+}
 
-fun FixType.toXmlString() = """
-    <fix>${this.value}</fix>
-""".trim()
+fun toXmlString(value: Double?, nodeName: String) = if (value != null) {
+    "<${nodeName}>${value}</${nodeName}>"
+} else {
+    ""
+}
 
-fun ExtensionType.toXmlString() = """
-        <${this.nodeName}${toXmlString(this.parameters)}>${this.value ?: ""}</${this.nodeName}>
-    """.trim()
+fun toXmlString(value: OffsetDateTime?, nodeName: String) = if (value != null) {
+    "<${nodeName}>${value.format(DTF)}</${nodeName}>"
+} else {
+    ""
+}
 
-fun TrksegType.toXmlString() = """
-    <trkseg>
-    ${this.trkpt?.toXmlString("trkpt")}
-    </trkseg>
-""".trim()
+fun toXmlString(value: Map<String, String>?) = value?.entries?.joinToString(separator = "") {
+    " ${it.key}=\"${it.value}\""
+} ?: ""
 
-fun toXmlString(value: String?, nodeName: String) =
-    if (value != null) {
-        """
-            <${nodeName}>${value}</${nodeName}>
-        """.trim()
-    } else {
-        ""
-    }
+private fun now(clock: Clock?) = OffsetDateTime.now(clock ?: Clock.systemDefaultZone()).format(DTF)
 
-fun toXmlString(value: Int?, nodeName: String) =
-    if (value != null) {
-        """
-            <${nodeName}>${value}</${nodeName}>
-        """.trim()
-    } else {
-        ""
-    }
-
-fun toXmlString(value: Double?, nodeName: String) =
-    if (value != null) {
-        """
-            <${nodeName}>${value}</${nodeName}>
-        """.trim()
-    } else {
-        ""
-    }
-
-fun toXmlString(value: OffsetDateTime?, nodeName: String) =
-    if (value != null) {
-        """
-            <${nodeName}>${value.format(DTF)}</${nodeName}>
-        """.trim()
-    } else {
-        ""
-    }
-
-fun toXmlString(value: Map<String, String>?) =
-    value?.entries?.joinToString(separator = "") {
-        " ${it.key}=\"${it.value}\""
-    } ?: ""
+private fun String.removeEmptyStrings() = this.lineSequence().map {
+    it.trim()
+}.filter {
+    it != ""
+}.joinToString("\n")
 
 class GpxWriter {
     companion object {
@@ -281,9 +267,9 @@ class GpxWriter {
         const val XMLNS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
         const val SCHEMA_LOCATION = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
 
-        internal val DTF = DateTimeFormatterBuilder()
-            .append(ISO_LOCAL_DATE_TIME) // use the existing formatter for date time
-            .appendOffset("+HH:MM", "+00:00") // set 'noOffsetText' to desired '+00:00'
-            .toFormatter()
+        internal val DTF =
+            DateTimeFormatterBuilder().append(ISO_LOCAL_DATE_TIME) // use the existing formatter for date time
+                .appendOffset("+HH:MM", "+00:00") // set 'noOffsetText' to desired '+00:00'
+                .toFormatter()
     }
 }
