@@ -158,7 +158,7 @@ class WptType(
         require(magvar == null || magvar in 0.0..360.0) {
             "magvar must be degree in (0)..(360) in Double"
         }
-        require(dgpsid in 0..1023) {
+        require(dgpsid == null || dgpsid in 0..1023) {
             "dgpsid must be in 0..1023"
         }
     }
