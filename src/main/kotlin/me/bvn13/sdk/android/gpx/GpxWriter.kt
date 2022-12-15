@@ -77,8 +77,8 @@ limitations under the License.
 
 package me.bvn13.sdk.android.gpx
 
+import me.bvn13.sdk.android.gpx.GpxConstant.Companion.HEADER
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.DTF
-import me.bvn13.sdk.android.gpx.GpxWriter.Companion.HEADER
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.SCHEMA_LOCATION
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS_XSI
@@ -262,7 +262,6 @@ private fun String.removeEmptyStrings() = this.lineSequence().map {
 
 class GpxWriter {
     companion object {
-        const val HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         const val XMLNS = "http://www.topografix.com/GPX/1/1"
         const val XMLNS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
         const val SCHEMA_LOCATION = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
