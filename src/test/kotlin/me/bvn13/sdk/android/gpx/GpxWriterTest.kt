@@ -432,7 +432,7 @@ class GpxWriterTest {
             <extensions>
             <ext-1>value1</ext-1>
             </extensions>
-            <wpt lat="14.64736838389662" lon="7.93212890625">
+            <rtept lat="14.64736838389662" lon="7.93212890625">
             <ele>10.0</ele>
             <time>2022-09-24T15:04:00+03:00</time>
             <magvar>3.0</magvar>
@@ -462,7 +462,7 @@ class GpxWriterTest {
             <extension1 first="second" third="fours"></extension1>
             <extension2 aa="bb" cc="dd"></extension2>
             </extensions>
-            </wpt>
+            </rtept>
             </rte>
             <trk>
             <name>track 1</name>

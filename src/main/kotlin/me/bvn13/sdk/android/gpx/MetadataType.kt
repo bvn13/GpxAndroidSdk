@@ -82,4 +82,25 @@ package me.bvn13.sdk.android.gpx
  * 	Providing rich, meaningful information about your GPX files allows others to search for and use your GPS data.
  */
 class MetadataType(val name: String, val description: String = "", val authorName: String = "") {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MetadataType
+
+        if (name != other.name) return false
+        if (description != other.description) return false
+        if (authorName != other.authorName) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + authorName.hashCode()
+        return result
+    }
+
 }

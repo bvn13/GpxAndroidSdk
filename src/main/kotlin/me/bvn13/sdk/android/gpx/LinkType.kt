@@ -87,4 +87,23 @@ package me.bvn13.sdk.android.gpx
  * [type] Mime type of content (image/jpeg)
  */
 class LinkType(val href: String, val text: String? = null, val type: String? = null) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as LinkType
+
+        if (href != other.href) return false
+        if (text != other.text) return false
+        if (type != other.type) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = href.hashCode()
+        result = 31 * result + (text?.hashCode() ?: 0)
+        result = 31 * result + (type?.hashCode() ?: 0)
+        return result
+    }
 }

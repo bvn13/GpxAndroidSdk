@@ -116,4 +116,38 @@ class TrkType(
             "number must be non negative Integer"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TrkType
+
+        if (name != other.name) return false
+        if (cmt != other.cmt) return false
+        if (desc != other.desc) return false
+        if (src != other.src) return false
+        if (link != other.link) return false
+        if (number != other.number) return false
+        if (type != other.type) return false
+        if (extensions != other.extensions) return false
+        if (trkseg != other.trkseg) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name?.hashCode() ?: 0
+        result = 31 * result + (cmt?.hashCode() ?: 0)
+        result = 31 * result + (desc?.hashCode() ?: 0)
+        result = 31 * result + (src?.hashCode() ?: 0)
+        result = 31 * result + (link?.hashCode() ?: 0)
+        result = 31 * result + (number ?: 0)
+        result = 31 * result + (type?.hashCode() ?: 0)
+        result = 31 * result + (extensions?.hashCode() ?: 0)
+        result = 31 * result + (trkseg?.hashCode() ?: 0)
+        return result
+    }
+
+
 }

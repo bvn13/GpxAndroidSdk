@@ -104,9 +104,34 @@ class GpxType(
 ) {
     val version: String = VERSION
 
+
     override fun equals(other: Any?): Boolean {
-        // TODO implement it
-        return super.equals(other)
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as GpxType
+
+        if (metadata != other.metadata) return false
+        if (creator != other.creator) return false
+        if (wpt != other.wpt) return false
+        if (rte != other.rte) return false
+        if (trk != other.trk) return false
+        if (extensions != other.extensions) return false
+        if (version != other.version) return false
+
+        return true
     }
+
+    override fun hashCode(): Int {
+        var result = metadata.hashCode()
+        result = 31 * result + creator.hashCode()
+        result = 31 * result + (wpt?.hashCode() ?: 0)
+        result = 31 * result + (rte?.hashCode() ?: 0)
+        result = 31 * result + (trk?.hashCode() ?: 0)
+        result = 31 * result + (extensions?.hashCode() ?: 0)
+        result = 31 * result + version.hashCode()
+        return result
+    }
+
     companion object { }
 }

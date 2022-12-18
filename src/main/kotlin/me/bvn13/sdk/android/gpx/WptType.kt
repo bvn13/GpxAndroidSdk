@@ -162,4 +162,62 @@ class WptType(
             "dgpsid must be in 0..1023"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as WptType
+
+        if (lat != other.lat) return false
+        if (lon != other.lon) return false
+        if (ele != other.ele) return false
+        if (time != other.time) return false
+        if (magvar != other.magvar) return false
+        if (geoidheight != other.geoidheight) return false
+        if (name != other.name) return false
+        if (cmt != other.cmt) return false
+        if (desc != other.desc) return false
+        if (src != other.src) return false
+        if (link != other.link) return false
+        if (sym != other.sym) return false
+        if (type != other.type) return false
+        if (fix != other.fix) return false
+        if (sat != other.sat) return false
+        if (hdop != other.hdop) return false
+        if (vdop != other.vdop) return false
+        if (pdop != other.pdop) return false
+        if (ageofgpsdata != other.ageofgpsdata) return false
+        if (dgpsid != other.dgpsid) return false
+        if (extensions != other.extensions) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = lat.hashCode()
+        result = 31 * result + lon.hashCode()
+        result = 31 * result + (ele?.hashCode() ?: 0)
+        result = 31 * result + (time?.hashCode() ?: 0)
+        result = 31 * result + (magvar?.hashCode() ?: 0)
+        result = 31 * result + (geoidheight?.hashCode() ?: 0)
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (cmt?.hashCode() ?: 0)
+        result = 31 * result + (desc?.hashCode() ?: 0)
+        result = 31 * result + (src?.hashCode() ?: 0)
+        result = 31 * result + (link?.hashCode() ?: 0)
+        result = 31 * result + (sym?.hashCode() ?: 0)
+        result = 31 * result + (type?.hashCode() ?: 0)
+        result = 31 * result + (fix?.hashCode() ?: 0)
+        result = 31 * result + (sat ?: 0)
+        result = 31 * result + (hdop?.hashCode() ?: 0)
+        result = 31 * result + (vdop?.hashCode() ?: 0)
+        result = 31 * result + (pdop?.hashCode() ?: 0)
+        result = 31 * result + (ageofgpsdata ?: 0)
+        result = 31 * result + (dgpsid ?: 0)
+        result = 31 * result + (extensions?.hashCode() ?: 0)
+        return result
+    }
+
+
 }

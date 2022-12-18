@@ -98,4 +98,26 @@ class ExtensionType(val nodeName: String, val value: String? = null, val paramet
             "value or parameters must be specified"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ExtensionType
+
+        if (nodeName != other.nodeName) return false
+        if (value != other.value) return false
+        if (parameters != other.parameters) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = nodeName.hashCode()
+        result = 31 * result + (value?.hashCode() ?: 0)
+        result = 31 * result + (parameters?.hashCode() ?: 0)
+        return result
+    }
+
+
 }
