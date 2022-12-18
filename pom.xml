@@ -6,7 +6,7 @@
 
     <artifactId>GpxAndroidSdk</artifactId>
     <groupId>me.bvn13.sdk.android.gpx</groupId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
 
     <packaging>jar</packaging>
 
@@ -253,10 +253,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/bvn13/OpenFeign-NormalizedLogger.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:bvn13/OpenFeign-NormalizedLogger.git</developerConnection>
+        <connection>scm:git:git@github.com:bvn13/GpxAndroidSdk.git</connection>
+        <developerConnection>scm:git:git@github.com:bvn13/GpxAndroidSdk.git</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/bvn13/OpenFeign-NormalizedLogger.git</url>
+        <url>https://github.com/bvn13/GpxAndroidSdk</url>
     </scm>
 
     <profiles>
