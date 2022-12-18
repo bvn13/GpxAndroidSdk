@@ -77,6 +77,8 @@ limitations under the License.
 
 package me.bvn13.sdk.android.gpx
 
+import me.bvn13.sdk.android.gpx.GpxConstant.Companion.VERSION
+
 /**
  * GPX documents contain a metadata header, followed by waypoints, routes, and tracks. You can add your own elements to the extensions section of the GPX document.
  *
@@ -100,5 +102,36 @@ class GpxType(
     val trk: List<TrkType>? = null,
     val extensions: ExtensionType? = null
 ) {
-    val version: String = "1.1"
+    val version: String = VERSION
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as GpxType
+
+        if (metadata != other.metadata) return false
+        if (creator != other.creator) return false
+        if (wpt != other.wpt) return false
+        if (rte != other.rte) return false
+        if (trk != other.trk) return false
+        if (extensions != other.extensions) return false
+        if (version != other.version) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = metadata.hashCode()
+        result = 31 * result + creator.hashCode()
+        result = 31 * result + (wpt?.hashCode() ?: 0)
+        result = 31 * result + (rte?.hashCode() ?: 0)
+        result = 31 * result + (trk?.hashCode() ?: 0)
+        result = 31 * result + (extensions?.hashCode() ?: 0)
+        result = 31 * result + version.hashCode()
+        return result
+    }
+
+    companion object { }
 }

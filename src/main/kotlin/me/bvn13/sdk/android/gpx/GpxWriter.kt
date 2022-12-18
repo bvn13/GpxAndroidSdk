@@ -77,15 +77,13 @@ limitations under the License.
 
 package me.bvn13.sdk.android.gpx
 
-import me.bvn13.sdk.android.gpx.GpxWriter.Companion.DTF
-import me.bvn13.sdk.android.gpx.GpxWriter.Companion.HEADER
+import me.bvn13.sdk.android.gpx.GpxConstant.Companion.DTF
+import me.bvn13.sdk.android.gpx.GpxConstant.Companion.HEADER
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.SCHEMA_LOCATION
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS_XSI
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
-import java.time.format.DateTimeFormatterBuilder
 
 fun GpxType.toXmlString(): String = this.toXmlString(null)
 
@@ -156,7 +154,7 @@ fun RteType.toXmlString() = """
     ${toXmlString(this.number, "number")}
     ${toXmlString(this.type, "type")}
     ${this.extensions?.toXmlString() ?: ""}
-    ${this.rtept?.toXmlString() ?: ""}
+    ${this.rtept?.toXmlString("rtept") ?: ""}
     </rte>
 """.trim().removeEmptyStrings()
 
@@ -262,14 +260,8 @@ private fun String.removeEmptyStrings() = this.lineSequence().map {
 
 class GpxWriter {
     companion object {
-        const val HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         const val XMLNS = "http://www.topografix.com/GPX/1/1"
         const val XMLNS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
         const val SCHEMA_LOCATION = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
-
-        internal val DTF =
-            DateTimeFormatterBuilder().append(ISO_LOCAL_DATE_TIME) // use the existing formatter for date time
-                .appendOffset("+HH:MM", "+00:00") // set 'noOffsetText' to desired '+00:00'
-                .toFormatter()
     }
 }
