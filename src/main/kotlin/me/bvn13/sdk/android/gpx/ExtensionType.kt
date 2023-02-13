@@ -92,10 +92,13 @@ package me.bvn13.sdk.android.gpx
  *
  * [parameters] Map of key-value pairs
  */
-class ExtensionType(val nodeName: String, val value: String? = null, val parameters: Map<String, String>? = null) {
+class ExtensionType(val nodeName: String,
+                    val value: String? = null,
+                    val parameters: Map<String, String>? = null,
+                    val nested: List<ExtensionType>? = null) {
     init {
-        require(value != null || parameters != null) {
-            "value or parameters must be specified"
+        require(value != null || parameters != null || nested != null) {
+            "value or parameters or nesting elements must be specified for ${nodeName}"
         }
     }
 
@@ -108,6 +111,7 @@ class ExtensionType(val nodeName: String, val value: String? = null, val paramet
         if (nodeName != other.nodeName) return false
         if (value != other.value) return false
         if (parameters != other.parameters) return false
+        if (nested != other.nested) return false
 
         return true
     }
@@ -116,8 +120,7 @@ class ExtensionType(val nodeName: String, val value: String? = null, val paramet
         var result = nodeName.hashCode()
         result = 31 * result + (value?.hashCode() ?: 0)
         result = 31 * result + (parameters?.hashCode() ?: 0)
+        result = 31 * result + (nested?.hashCode() ?: 0)
         return result
     }
-
-
 }
