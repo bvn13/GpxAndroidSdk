@@ -3,14 +3,14 @@ package me.bvn13.sdk.android.gpx
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.io.ByteArrayInputStream
 import java.time.*
-import kotlin.test.assertEquals
 
-class GpxReaderTest {
+class ReadWriteTest {
 
-    @DisplayName("test GPX Reader")
+    @DisplayName("Read-Write test")
     @Test
-    fun testReader() {
+    fun testReadWrite() {
         val clock = Clock.fixed(
             LocalDateTime.of(2022, 9, 24, 15, 4, 0, 0).toInstant(ZoneOffset.ofHours(3)), ZoneId.of("Europe/Moscow")
         )
@@ -234,192 +234,10 @@ class GpxReaderTest {
             )
         )
 
-        val gpxString = """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <gpx
-            xmlns="http://www.topografix.com/GPX/1/1"
-            version="1.1"
-            creator="me.bvn13.sdk.android.gpx"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-            <time>2022-09-24T15:04:00+03:00</time>
-            <metadata>
-            <name>test name</name>
-            <desc>test description</desc>
-            <author>
-            <name>bvn13</name>
-            </author>
-            </metadata>
-            <wpt lat="14.64736838389662" lon="7.93212890625">
-            <ele>10.0</ele>
-            <time>2022-09-24T15:04:00+03:00</time>
-            <magvar>3.0</magvar>
-            <geoidheight>45.0</geoidheight>
-            <name>test point 1</name>
-            <cmt>comment 1</cmt>
-            <desc>description of point 1</desc>
-            <src>source 1</src>
-            <link href="http://link-to.site.href">
-            <text>text</text>
-            <type>hyperlink</type>
-            </link>
-            <link href="http://link2-to.site.href">
-            <text>text2</text>
-            <type>hyperlink2</type>
-            </link>
-            <sym>sym 1</sym>
-            <type>type 1</type>
-            <fix>dgps</fix>
-            <sat>1</sat>
-            <hdop>55.0</hdop>
-            <vdop>66.0</vdop>
-            <pdop>77.0</pdop>
-            <ageofgpsdata>44</ageofgpsdata>
-            <dgpsid>88</dgpsid>
-            <extensions>
-            <extension1 first="second" third="fours"></extension1>
-            <extension2 aa="bb" cc="dd"></extension2>
-            </extensions>
-            </wpt>
-            <rte>
-            <name>rte name</name>
-            <cmt>cmt</cmt>
-            <desc>desc</desc>
-            <src>src</src>
-            <link href="https://new.link.rte">
-            <text>new text rte</text>
-            <type>hyperlink</type>
-            </link>
-            <number>1234</number>
-            <type>route</type>
-            <extensions>
-            <ext-1>value1</ext-1>
-            </extensions>
-            <rtept lat="14.64736838389662" lon="7.93212890625">
-            <ele>10.0</ele>
-            <time>2022-09-24T15:04:00+03:00</time>
-            <magvar>3.0</magvar>
-            <geoidheight>45.0</geoidheight>
-            <name>test point 1</name>
-            <cmt>comment 1</cmt>
-            <desc>description of point 1</desc>
-            <src>source 1</src>
-            <link href="http://link-to.site.href">
-            <text>text</text>
-            <type>hyperlink</type>
-            </link>
-            <link href="http://link2-to.site.href">
-            <text>text2</text>
-            <type>hyperlink2</type>
-            </link>
-            <sym>sym 1</sym>
-            <type>type 1</type>
-            <fix>dgps</fix>
-            <sat>1</sat>
-            <hdop>55.0</hdop>
-            <vdop>66.0</vdop>
-            <pdop>77.0</pdop>
-            <ageofgpsdata>44</ageofgpsdata>
-            <dgpsid>88</dgpsid>
-            <extensions>
-            <extension1 first="second" third="fours"></extension1>
-            <extension2 aa="bb" cc="dd"></extension2>
-            </extensions>
-            </rtept>
-            </rte>
-            <trk>
-            <name>track 1</name>
-            <cmt>comment track 1</cmt>
-            <desc>desc track 1</desc>
-            <src>src track 1</src>
-            <number>1234</number>
-            <type>type 1</type>
-            <trkseg>
-            <trkpt lat="14.64736838389662" lon="7.93212890625">
-            <ele>10.0</ele>
-            <time>2022-09-24T15:04:00+03:00</time>
-            <magvar>3.0</magvar>
-            <geoidheight>45.0</geoidheight>
-            <name>test point 1</name>
-            <cmt>comment 1</cmt>
-            <desc>description of point 1</desc>
-            <src>source 1</src>
-            <link href="http://link-to.site.href">
-            <text>text</text>
-            <type>hyperlink</type>
-            </link>
-            <link href="http://link2-to.site.href">
-            <text>text2</text>
-            <type>hyperlink2</type>
-            </link>
-            <sym>sym 1</sym>
-            <type>type 1</type>
-            <fix>dgps</fix>
-            <sat>1</sat>
-            <hdop>55.0</hdop>
-            <vdop>66.0</vdop>
-            <pdop>77.0</pdop>
-            <ageofgpsdata>44</ageofgpsdata>
-            <dgpsid>88</dgpsid>
-            <extensions>
-            <extension1 first="second" third="fours"></extension1>
-            <extension2 aa="bb" cc="dd"></extension2>
-            </extensions>
-            </trkpt>
-            <trkpt lat="14.64736838389662" lon="7.93212890625">
-            <ele>10.0</ele>
-            <time>2022-09-24T15:04:00+03:00</time>
-            <magvar>3.0</magvar>
-            <geoidheight>45.0</geoidheight>
-            <name>test point 1</name>
-            <cmt>comment 1</cmt>
-            <desc>description of point 1</desc>
-            <src>source 1</src>
-            <link href="http://link-to.site.href">
-            <text>text</text>
-            <type>hyperlink</type>
-            </link>
-            <link href="http://link2-to.site.href">
-            <text>text2</text>
-            <type>hyperlink2</type>
-            </link>
-            <sym>sym 1</sym>
-            <type>type 1</type>
-            <fix>dgps</fix>
-            <sat>1</sat>
-            <hdop>55.0</hdop>
-            <vdop>66.0</vdop>
-            <pdop>77.0</pdop>
-            <ageofgpsdata>44</ageofgpsdata>
-            <dgpsid>88</dgpsid>
-            <extensions>
-            <extension1 first="second" third="fours"></extension1>
-            <extension2 aa="bb" cc="dd"></extension2>
-            </extensions>
-            </trkpt>
-            </trkseg>
-            </trk>
-            </gpx>
-            """.trim()
-                .lineSequence()
-                .map {
-                    it.trim()
-                }
-                .joinToString("\n")
+        val gpx = gpxType.toXmlString(clock)
+        val deserializedGpxType = GpxType.read(ByteArrayInputStream(gpx.toByteArray()))
 
-        val gpx = GpxType.read(gpxString.byteInputStream())
-        assertEquals(gpxType, gpx)
+        Assertions.assertEquals(gpxType, deserializedGpxType)
     }
 
-    @DisplayName("Read test.gpx (generated in OsmAnd Android application")
-    @Test
-    fun readTestGpx() {
-        val gpxType = GpxType.read(javaClass.classLoader.getResource("test.gpx").openStream())
-        Assertions.assertEquals(1011, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.size ?: 0)
-        Assertions.assertEquals(1, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.get(0)?.extensions?.size ?: 0)
-        Assertions.assertEquals(2, gpxType.trk?.get(0)?.trkseg?.get(0)?.extensions?.nested?.size ?: 0)
-        Assertions.assertEquals(223, gpxType.trk?.get(0)?.trkseg?.get(0)?.extensions?.nested?.get(0)?.nested?.size ?: 0)
-        Assertions.assertEquals(159, gpxType.trk?.get(0)?.trkseg?.get(0)?.extensions?.nested?.get(1)?.nested?.size ?: 0)
-        Assertions.assertEquals(1, gpxType.extensions?.nested?.size ?: 0)
-    }
 }

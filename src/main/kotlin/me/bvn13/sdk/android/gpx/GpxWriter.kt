@@ -100,6 +100,7 @@ fun GpxType.toXmlString(clock: Clock?): String = """
     ${this.wpt?.toXmlString() ?: ""}
     ${this.rte?.toXmlString() ?: ""}
     ${this.trk?.toXmlString() ?: ""}
+    ${this.extensions?.toXmlString() ?: ""}
     </gpx>
 """.trim().removeEmptyStrings()
 
@@ -140,7 +141,7 @@ fun WptType.toXmlString(nodeName: String) = """
     ${toXmlString(pdop, "pdop")}
     ${toXmlString(ageofgpsdata, "ageofgpsdata")}
     ${toXmlString(dgpsid, "dgpsid")}
-    ${extensions?.toXmlString() ?: ""}
+    ${extensions?.toXmlString(true) ?: ""}
     </${nodeName}>
 """.trim().removeEmptyStrings()
 
@@ -153,7 +154,7 @@ fun RteType.toXmlString() = """
     ${this.link?.toXmlString() ?: ""}
     ${toXmlString(this.number, "number")}
     ${toXmlString(this.type, "type")}
-    ${this.extensions?.toXmlString() ?: ""}
+    ${this.extensions?.toXmlString(true) ?: ""}
     ${this.rtept?.toXmlString("rtept") ?: ""}
     </rte>
 """.trim().removeEmptyStrings()
@@ -183,13 +184,21 @@ fun FixType.toXmlString() = """
     <fix>${this.value}</fix>
 """.trim().removeEmptyStrings()
 
-fun ExtensionType.toXmlString() = """
+fun ExtensionType.toXmlString() =
+    if ((this.nested?.size ?: 0) > 0) {
+        """
+        <${this.nodeName}${toXmlString(this.parameters)}>${this.nested?.toXmlString() ?: ""}</${this.nodeName}>
+    """.trim().removeEmptyStrings()
+    } else {
+        """
         <${this.nodeName}${toXmlString(this.parameters)}>${this.value ?: ""}</${this.nodeName}>
     """.trim().removeEmptyStrings()
+    }
 
 fun TrksegType.toXmlString() = """
     <trkseg>
     ${this.trkpt?.toXmlString("trkpt") ?: ""}
+    ${this.extensions?.toXmlString() ?: ""}
     </trkseg>
 """.trim().removeEmptyStrings()
 
@@ -197,9 +206,17 @@ fun List<WptType>.toXmlString(nodeName: String?) = this.joinToString(prefix = "\
     it.toXmlString(nodeName)
 }
 
-fun List<ExtensionType>.toXmlString() = this.joinToString(
-    prefix = "<extensions>\n", postfix = "\n</extensions>", separator = "\n", transform = ExtensionType::toXmlString
-)
+fun List<ExtensionType>.toXmlString(inGroup: Boolean = false): String {
+    if (inGroup) {
+        return this.joinToString(
+            prefix = "<extensions>\n", postfix = "\n</extensions>", separator = "\n", transform = ExtensionType::toXmlString
+        )
+    } else {
+        return this.joinToString(
+            prefix = "\n", postfix = "\n", separator = "\n", transform = ExtensionType::toXmlString
+        )
+    }
+}
 
 @JvmName("toXmlStringWptType")
 fun List<WptType>.toXmlString() = this.joinToString(prefix = "", postfix = "", separator = "") {

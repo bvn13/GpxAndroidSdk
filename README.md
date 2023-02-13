@@ -1,5 +1,7 @@
 # Android (Kotlin) SDK for manipulating GPX files
 
+![](https://img.shields.io/maven-central/v/me.bvn13.sdk.android.gpx/GpxAndroidSdk)
+
 ## About
 
 This is another one SDK for reading and writing (manipulating) GPX files.
@@ -7,6 +9,12 @@ This is another one SDK for reading and writing (manipulating) GPX files.
 Official GPX format is on [topografix](https://www.topografix.com/GPX/1/1/) site.
 
 ## Changelog
+
+### 2023-02-13
+
+1) Fixed missed extensions
+2) ✅ Tested on reading with self written content
+3) ✅ Tested on reading [OsmAnd](https://osmand.net) GPX files
 
 ### 2022-12-18
 

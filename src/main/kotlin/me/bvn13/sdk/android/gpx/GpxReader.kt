@@ -3,6 +3,7 @@ package me.bvn13.sdk.android.gpx
 import me.bvn13.sdk.android.gpx.GpxConstant.Companion.DTF
 import java.io.InputStream
 import java.time.OffsetDateTime
+import java.util.stream.Collectors
 
 fun GpxType.Companion.read(dis: InputStream) = GpxReader().read(dis)
 
@@ -28,7 +29,13 @@ class GpxReader {
 
     private fun readSignature(dis: InputStream, buffer: Container): GpxType {
         val container = readUntil(dis, buffer, '\n')
-        if ("${GpxConstant.HEADER}\n" != container.buffer.asString()) {
+        val signaturePrepared = container.buffer.asString()
+            .trim()
+            .replace("'", "\"")
+            .replace(" ?", "?")
+        if (GpxConstant.HEADER != signaturePrepared
+            && GpxConstant.HEADER_EXTENDED != signaturePrepared
+        ) {
             throw IllegalArgumentException("Wrong xml signature!")
         }
         return readBeginning(dis, Container.empty(container.position))
@@ -59,10 +66,12 @@ class GpxReader {
         return findObject(container.objects, "gpx").let {
             return GpxType(
                 metadata = assembleMetadataType(it.nested),
-                creator = findAttributeOrNull(it.attributes, "creator") ?: throw IllegalArgumentException("Gpx.Creator not found"),
-                wpt = findObjectsOrNull(it.nested ,"wpt")?.map { assembleWptType(it) },
+                creator = findAttributeOrNull(it.attributes, "creator")
+                    ?: throw IllegalArgumentException("Gpx.Creator not found"),
+                wpt = findObjectsOrNull(it.nested, "wpt")?.map { assembleWptType(it) },
                 rte = findObjectsOrNull(it.nested, "rte")?.map { assembleRteType(it) },
-                trk = findObjectsOrNull(it.nested, "trk")?.map { assembleTrkType(it) }
+                trk = findObjectsOrNull(it.nested, "trk")?.map { assembleTrkType(it) },
+                extensions = findObjectOrNull(it.nested, "extensions")?.let { assembleExtensionType(it) }
             )
         }
     }
@@ -71,10 +80,13 @@ class GpxReader {
         findObject(objects, "metadata")
             .let {
                 return MetadataType(
-                    name = findObjectOrNull(it.nested, "name")?.value ?: throw IllegalArgumentException("Gpx.Metadata.Name not found"),
-                    description = findObjectOrNull(it.nested, "desc")?.value ?: throw IllegalArgumentException("Gpx.Metadata.Description not found"),
-                    authorName = findObject(it.nested, "author").let { author ->
-                        findObject(author.nested, "name").value ?: throw IllegalArgumentException("Gpx.Metadata.Author.Name not found")
+                    name = findObjectOrNull(it.nested, "name")?.value
+                        ?: throw IllegalArgumentException("Gpx.Metadata.Name not found"),
+                    description = findObjectOrNull(it.nested, "desc")?.value
+                        ?: "",
+                    authorName = findObjectOrNull(it.nested, "author").let { author ->
+                        findObjectOrNull(author?.nested, "name")?.value
+                            ?: ""
                     }
                 )
             }
@@ -123,7 +135,10 @@ class GpxReader {
             cmt = findObjectOrNull(obj.nested, "cmt")?.value,
             desc = findObjectOrNull(obj.nested, "desc")?.value,
             src = findObjectOrNull(obj.nested, "src")?.value,
-            link = findObjectsOrNull(obj.nested, "link")?.let { list -> if (list.isNotEmpty()) list.map { assembleLinkType(it) } else null },
+            link = findObjectsOrNull(
+                obj.nested,
+                "link"
+            )?.let { list -> if (list.isNotEmpty()) list.map { assembleLinkType(it) } else null },
             number = findObjectOrNull(obj.nested, "number")?.value?.toInt(),
             type = findObjectOrNull(obj.nested, "type")?.value,
             extensions = findObjectOrNull(obj.nested, "extensions")?.let { assembleExtensionType(it) },
@@ -140,12 +155,17 @@ class GpxReader {
     private fun assembleFixType(value: String): FixType =
         FixType.valueOf(value.uppercase())
 
-    private fun assembleExtensionType(obj: XmlObject): ExtensionType =
-        ExtensionType(
+    private fun assembleExtensionType(obj: XmlObject): ExtensionType {
+        val nested: List<ExtensionType>? = obj.nested?.stream()
+            ?.map { assembleExtensionType(it) }
+            ?.collect(Collectors.toList())
+        return ExtensionType(
             nodeName = obj.type,
             value = if (obj.value == "") null else obj.value,
-            parameters = if (obj.attributes.isEmpty()) null else obj.attributes.toSortedMap()
-        )
+            parameters = if (obj.attributes.isEmpty()) null else obj.attributes.toSortedMap(),
+            nested = nested
+         )
+    }
 
     private fun assembleTrksegType(obj: XmlObject): TrksegType =
         TrksegType(
@@ -186,14 +206,16 @@ class GpxReader {
             container = readAttributes(dis, container)
             xmlObject.attributes = container.attributes
         }
-        container = readSkipping(dis, container, SKIPPING_SET)
-        if (container.byte!!.toInt() == '<'.code) {
-            container = readNestedObjects(dis, container)
-            xmlObject.nested = container.objects
-            container = readFinishingTag(dis, container, tagName)
-        }
-        if (container.buffer.asString() != "</$tagName>") {
-            container = readValue(dis, container, tagName)
+        if (!container.isShortClosing) {
+            container = readSkipping(dis, container, SKIPPING_SET)
+            if (container.byte!!.toInt() == '<'.code) {
+                container = readNestedObjects(dis, container)
+                xmlObject.nested = container.objects
+                container = readFinishingTag(dis, container, tagName)
+            }
+            if (container.buffer.asString() != "</$tagName>") {
+                container = readValue(dis, container, tagName)
+            }
         }
         xmlObject.value = container.buffer.asString().replace("</$tagName>", "")
         container.objects = listOf(xmlObject)
@@ -221,8 +243,12 @@ class GpxReader {
         return container
     }
 
-    private fun readFinishingTag(dis: InputStream, buffer: Container, tagName: String): Container =
-        readExactly(dis, buffer, "</${tagName}>")
+    private fun readFinishingTag(dis: InputStream, buffer: Container, tagName: String): Container {
+        if (buffer.isShortClosing) {
+            return buffer
+        }
+        return readExactly(dis, buffer, "</${tagName}>")
+    }
 
     private fun readValue(dis: InputStream, buffer: Container, tagName: String): Container =
         readUntil(dis, buffer, "</$tagName>")
@@ -236,8 +262,10 @@ class GpxReader {
         do {
             attributeContainer = readAttribute(dis, attributeContainer)
             attributes.putAll(attributeContainer.attributes)
-        } while (attributeContainer.attributes.isNotEmpty() && attributeContainer.byte!!.toInt() != '>'.code)
-        val result = Container.emptyWithAttributes(attributeContainer.position, attributes)
+        } while (attributeContainer.attributes.isNotEmpty()
+            && attributeContainer.byte!!.toInt() != '>'.code
+        )
+        val result = Container.emptyWithAttributes(attributeContainer.position, attributes, attributeContainer.isShortClosing)
         return result
     }
 
@@ -250,8 +278,17 @@ class GpxReader {
         val valueAsString = valueContainer.buffer.asString()
         val value = valueAsString.substring(0, valueAsString.length - 1)
         val result = Container.empty(valueContainer.position)
-        val closingContainer = readSkipping(dis, result, SKIPPING_SET)
-        val nextBlockContainer = Container.of(closingContainer.byte!!, closingContainer.position)
+        var closingContainer = readSkipping(dis, result, SKIPPING_SET)
+        var isShortClosing = false
+        if (closingContainer.byte!!.toInt() == '/'.code) {
+            val endingContainer = readByte(dis, closingContainer)
+            if (endingContainer.byte!!.toInt() != '>'.code) {
+                throw IllegalArgumentException("There must be valid closing tag at ${endingContainer.position}")
+            }
+            closingContainer = endingContainer
+            isShortClosing = true
+        }
+        val nextBlockContainer = Container.of(closingContainer.byte!!, closingContainer.position, isShortClosing)
         nextBlockContainer.attributes = mapOf(name to value)
         return nextBlockContainer
     }
@@ -321,28 +358,42 @@ class GpxReader {
     private fun readByte(dis: InputStream, container: Container): Container {
         val ba = ByteArray(1);
         if (-1 == dis.read(ba, 0, 1)) {
-            throw InterruptedException("EOF")
+            throw InterruptedException("EOF at ${container.position}\nUnparsed data: " + String(container.buffer))
         } else if (ba.size != 1) {
-            throw InterruptedException("Reading of 1 byte returns ${ba.size} bytes")
+            throw InterruptedException("Reading of 1 byte returns ${ba.size} bytes at ${container.position}")
         }
         return Container(container.position + 1, ba[0], container.buffer.plus(ba))
     }
 
-    class Container(val position: Long = 0, val byte: Byte?, val buffer: ByteArray) {
+    class Container(
+        val position: Long = 0,
+        val byte: Byte?,
+        val buffer: ByteArray,
+        val isShortClosing: Boolean = false
+    ) {
         var objects: List<XmlObject>? = null
         var attributes: Map<String, String> = HashMap()
         var value: String? = null
 
         companion object {
             fun empty(): Container = empty(0)
-            fun empty(position: Long) = Container(position, null, ByteArray(0))
-            fun emptyWithAttributes(position: Long, attributes: Map<String, String>): Container {
-                val container = Container.empty(position)
+            fun empty(position: Long, isShortClosing: Boolean = false) = Container(position, null, ByteArray(0), isShortClosing)
+            fun emptyWithAttributes(position: Long, attributes: Map<String, String>, isShortClosing: Boolean = false): Container {
+                val container = Container.empty(position, isShortClosing)
                 container.attributes = attributes
                 return container
             }
 
-            fun of(b: Byte, position: Long) = Container(position, b, ByteArray(1) { _ -> b })
+            fun of(b: Byte, position: Long, isShortClosing: Boolean = false) =
+                Container(position, b, ByteArray(1) { _ -> b }, isShortClosing)
+
+            fun isShortClosing(c: Container, buffer: ByteArray): Container {
+                val container = Container(c.position, c.byte, buffer, isShortClosing = true)
+                container.objects = c.objects
+                container.attributes = c.attributes
+                container.value = c.value
+                return container
+            }
         }
 
         override fun toString(): String = this.buffer.asString()
