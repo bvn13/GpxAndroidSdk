@@ -199,7 +199,7 @@ class GpxReader {
             throw IllegalArgumentException("Not a tag at position ${buffer.position}")
         }
         var container = readUntil(dis, buffer, setOf(' ', '\n', '>'))
-        val tagName = container.buffer.asString().substring(1, container.buffer.size - 1).lowercase()
+        val tagName = container.buffer.asString().substring(1, container.buffer.size - 1)
         checker?.invoke(container)
         val xmlObject = XmlObject(tagName)
         if (container.byte!!.toInt() != '>'.code) {
@@ -406,7 +406,7 @@ class GpxReader {
         var value: String? = null
 
         init {
-            this.type = type.lowercase()
+            this.type = type
         }
     }
 
