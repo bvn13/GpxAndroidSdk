@@ -411,7 +411,7 @@ class GpxReaderTest {
         assertEquals(gpxType, gpx)
     }
 
-    @DisplayName("Read test.gpx (generated in OsmAnd Android application")
+    @DisplayName("Read test.gpx (generated in OsmAnd Android application)")
     @Test
     fun readTestGpx() {
         val gpxType = GpxType.read(javaClass.classLoader.getResource("test.gpx").openStream())
@@ -421,5 +421,13 @@ class GpxReaderTest {
         Assertions.assertEquals(223, gpxType.trk?.get(0)?.trkseg?.get(0)?.extensions?.nested?.get(0)?.nested?.size ?: 0)
         Assertions.assertEquals(159, gpxType.trk?.get(0)?.trkseg?.get(0)?.extensions?.nested?.get(1)?.nested?.size ?: 0)
         Assertions.assertEquals(1, gpxType.extensions?.nested?.size ?: 0)
+    }
+
+    @DisplayName("Read track-2023-03-01--21-21-54.gpx")
+    @Test
+    fun readTestGpx_v_1_9() {
+        val gpxType = GpxType.read(javaClass.classLoader.getResource("track-2023-03-01--21-21-54.gpx").openStream())
+        Assertions.assertEquals(20, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.size ?: 0)
+        Assertions.assertEquals(4, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.get(0)?.extensions?.size ?: 0)
     }
 }

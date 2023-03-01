@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+xmlns="http://www.topografix.com/GPX/1/1"
+version="1.1"
+creator="me.bvn13.sdk.android.gpx"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<time>2023-03-01T21:22:03.369+03:00</time>
+<metadata>
+<name>2023-03-01T21:22:02.89</name>
+<desc></desc>
+<author>
+<name></name>
+</author>
+</metadata>
+<trk>
+<name>Track 1</name>
+<TRKSEG>
+<trkpt lat="55.8819464" lon="37.637977">
+<ele>169.1999969482422</ele>
+<time>7592-05-31T11:41:07+03:00</time>
+<extensions>
+<speed>1.0133984</speed>
+<timeNanos>177426232867134</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819464" lon="37.637977">
+<ele>169.1999969482422</ele>
+<time>7592-05-31T11:41:07+03:00</time>
+<extensions>
+<speed>1.0133984</speed>
+<timeNanos>177426232867134</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819464" lon="37.637977">
+<ele>169.1999969482422</ele>
+<time>7592-05-31T11:41:07+03:00</time>
+<extensions>
+<speed>1.0133984</speed>
+<timeNanos>177426232867134</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819464" lon="37.637977">
+<ele>169.1999969482422</ele>
+<time>7592-05-31T11:41:07+03:00</time>
+<extensions>
+<speed>1.0133984</speed>
+<timeNanos>177426232867134</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819464" lon="37.637977">
+<ele>169.1999969482422</ele>
+<time>7592-05-31T11:41:07+03:00</time>
+<extensions>
+<speed>1.0133984</speed>
+<timeNanos>177426232867134</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819588" lon="37.6375427">
+<ele>170.39999389648438</ele>
+<time>7592-12-14T07:05:54+03:00</time>
+<extensions>
+<speed>1.0500889</speed>
+<timeNanos>177443237154632</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819588" lon="37.6375427">
+<ele>170.39999389648438</ele>
+<time>7592-12-14T07:05:54+03:00</time>
+<extensions>
+<speed>1.0500889</speed>
+<timeNanos>177443237154632</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819588" lon="37.6375427">
+<ele>170.39999389648438</ele>
+<time>7592-12-14T07:05:54+03:00</time>
+<extensions>
+<speed>1.0500889</speed>
+<timeNanos>177443237154632</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819588" lon="37.6375427">
+<ele>170.39999389648438</ele>
+<time>7592-12-14T07:05:54+03:00</time>
+<extensions>
+<speed>1.0500889</speed>
+<timeNanos>177443237154632</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8819588" lon="37.6375427">
+<ele>170.39999389648438</ele>
+<time>7592-12-14T07:05:54+03:00</time>
+<extensions>
+<speed>1.0500889</speed>
+<timeNanos>177443237154632</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8820349" lon="37.6369261">
+<ele>170.39999389648438</ele>
+<time>7593-12-31T05:02:57+03:00</time>
+<extensions>
+<speed>1.0334443</speed>
+<timeNanos>177476234577543</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8820349" lon="37.6369261">
+<ele>170.39999389648438</ele>
+<time>7593-12-31T05:02:57+03:00</time>
+<extensions>
+<speed>1.0334443</speed>
+<timeNanos>177476234577543</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8820349" lon="37.6369261">
+<ele>170.39999389648438</ele>
+<time>7593-12-31T05:02:57+03:00</time>
+<extensions>
+<speed>1.0334443</speed>
+<timeNanos>177476234577543</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8820349" lon="37.6369261">
+<ele>170.39999389648438</ele>
+<time>7593-12-31T05:02:57+03:00</time>
+<extensions>
+<speed>1.0334443</speed>
+<timeNanos>177476234577543</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8820349" lon="37.6369261">
+<ele>170.39999389648438</ele>
+<time>7593-12-31T05:02:57+03:00</time>
+<extensions>
+<speed>1.0334443</speed>
+<timeNanos>177476234577543</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8821806" lon="37.6368125">
+<ele>170.6999969482422</ele>
+<time>7594-07-27T10:48:08+03:00</time>
+<extensions>
+<speed>0.123607546</speed>
+<timeNanos>177494226488478</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8821806" lon="37.6368125">
+<ele>170.6999969482422</ele>
+<time>7594-07-27T10:48:08+03:00</time>
+<extensions>
+<speed>0.123607546</speed>
+<timeNanos>177494226488478</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8821806" lon="37.6368125">
+<ele>170.6999969482422</ele>
+<time>7594-07-27T10:48:08+03:00</time>
+<extensions>
+<speed>0.123607546</speed>
+<timeNanos>177494226488478</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8821806" lon="37.6368125">
+<ele>170.6999969482422</ele>
+<time>7594-07-27T10:48:08+03:00</time>
+<extensions>
+<speed>0.123607546</speed>
+<timeNanos>177494226488478</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+<trkpt lat="55.8821806" lon="37.6368125">
+<ele>170.6999969482422</ele>
+<time>7594-07-27T10:48:08+03:00</time>
+<extensions>
+<speed>0.123607546</speed>
+<timeNanos>177494226488478</timeNanos>
+<speedAccuracyMetersPerSecond>0.15</speedAccuracyMetersPerSecond>
+<degrees>5.0</degrees>
+</extensions>
+</trkpt>
+</TRKSEG>
+</trk>
+</gpx>
