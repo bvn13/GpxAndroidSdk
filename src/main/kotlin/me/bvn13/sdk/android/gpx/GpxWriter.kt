@@ -82,6 +82,9 @@ import me.bvn13.sdk.android.gpx.GpxConstant.Companion.HEADER
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.SCHEMA_LOCATION
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS
 import me.bvn13.sdk.android.gpx.GpxWriter.Companion.XMLNS_XSI
+import me.bvn13.sdk.android.gpx.GpxWriter.Companion.log
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.time.Clock
 import java.time.OffsetDateTime
 
@@ -257,10 +260,17 @@ fun toXmlString(value: Double?, nodeName: String) = if (value != null) {
     ""
 }
 
-fun toXmlString(value: OffsetDateTime?, nodeName: String) = if (value != null) {
-    "<${nodeName}>${value.format(DTF)}</${nodeName}>"
-} else {
-    ""
+fun toXmlString(value: OffsetDateTime?, nodeName: String): String {
+    if (value != null) {
+        try {
+            return "<${nodeName}>${value.format(DTF)}</${nodeName}>"
+        } catch (e: Exception) {
+            log.warn(String.format("Unable to format datetime value %s in node %s", value, nodeName), e)
+            return ""
+        }
+    } else {
+        return ""
+    }
 }
 
 fun toXmlString(value: Map<String, String>?) = value?.entries?.joinToString(separator = "") {
@@ -280,5 +290,6 @@ class GpxWriter {
         const val XMLNS = "http://www.topografix.com/GPX/1/1"
         const val XMLNS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
         const val SCHEMA_LOCATION = "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
+        val log: Logger = LoggerFactory.getLogger(GpxWriter.javaClass)
     }
 }

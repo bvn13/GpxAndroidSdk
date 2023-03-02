@@ -6,7 +6,7 @@
 
     <artifactId>GpxAndroidSdk</artifactId>
     <groupId>me.bvn13.sdk.android.gpx</groupId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.10.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -58,6 +58,11 @@
         </repository>
     </distributionManagement>
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.6</version>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
@@ -234,7 +239,7 @@
                             <developmentBranch>develop</developmentBranch>
                         </gitFlowConfig>
                         <incrementVersionAtFinish>true</incrementVersionAtFinish>
-                        <versionDigitToIncrement>2</versionDigitToIncrement>
+                        <versionDigitToIncrement>3</versionDigitToIncrement>
                     </configuration>
                 </plugin>
             </plugins>
