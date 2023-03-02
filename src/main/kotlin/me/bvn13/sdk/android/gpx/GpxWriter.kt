@@ -265,7 +265,7 @@ fun toXmlString(value: OffsetDateTime?, nodeName: String): String {
         try {
             return "<${nodeName}>${value.format(DTF)}</${nodeName}>"
         } catch (e: Exception) {
-            log.warn(String.format("Unable to format datetime value %s in node %s", value, nodeName), e)
+            log.warn(String.format("Unable to format datetime value in node %s", nodeName), e)
             return ""
         }
     } else {
