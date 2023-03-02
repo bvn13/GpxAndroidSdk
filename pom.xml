@@ -6,7 +6,7 @@
 
     <artifactId>GpxAndroidSdk</artifactId>
     <groupId>me.bvn13.sdk.android.gpx</groupId>
-    <version>1.10.2</version>
+    <version>1.10.3-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
