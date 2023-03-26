@@ -96,12 +96,6 @@ class ExtensionType(val nodeName: String,
                     val value: String? = null,
                     val parameters: Map<String, String>? = null,
                     val nested: List<ExtensionType>? = null) {
-    init {
-        require(value != null || parameters != null || nested != null) {
-            "value or parameters or nesting elements must be specified for ${nodeName}"
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
