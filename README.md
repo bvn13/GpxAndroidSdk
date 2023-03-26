@@ -8,11 +8,18 @@ This is another one SDK for reading and writing (manipulating) GPX files.
 
 Official GPX format is on [topografix](https://www.topografix.com/GPX/1/1/) site.
 
+## Why this one?
+
+1. This library supports GPX v1.1 format
+2. This library reads and writes files in one pass
+3. This library works without any external dependency
+
 ## Changelog
 
 ### 2023-03-26
 
 1) Fixed signature reading
+2) Since 1.10.4 extensions can have NULL as values
 
 ### 2023-02-13
 
@@ -22,13 +29,13 @@ Official GPX format is on [topografix](https://www.topografix.com/GPX/1/1/) site
 
 ### 2022-12-18
 
-1) implemented GPX format reader
+1) Implemented GPX format reader
 
 ### 2022-09-25
 
-1) project started
-2) implemented GPX format in Kotlin
-3) implemented representing GPX object into String for future saving
+1) Project started
+2) Implemented GPX format in Kotlin
+3) Implemented representing GPX object into String for future saving
 
 ## Examples
 
