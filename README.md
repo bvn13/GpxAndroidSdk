@@ -10,6 +10,10 @@ Official GPX format is on [topografix](https://www.topografix.com/GPX/1/1/) site
 
 ## Changelog
 
+### 2023-03-26
+
+1) Fixed signature reading
+
 ### 2023-02-13
 
 1) Fixed missed extensions

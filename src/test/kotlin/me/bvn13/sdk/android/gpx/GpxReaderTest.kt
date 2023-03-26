@@ -401,11 +401,11 @@ class GpxReaderTest {
             </trk>
             </gpx>
             """.trim()
-                .lineSequence()
-                .map {
-                    it.trim()
-                }
-                .joinToString("\n")
+            .lineSequence()
+            .map {
+                it.trim()
+            }
+            .joinToString("\n")
 
         val gpx = GpxType.read(gpxString.byteInputStream())
         assertEquals(gpxType, gpx)
@@ -429,5 +429,85 @@ class GpxReaderTest {
         val gpxType = GpxType.read(javaClass.classLoader.getResource("track-2023-03-01--21-21-54.gpx").openStream())
         Assertions.assertEquals(20, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.size ?: 0)
         Assertions.assertEquals(4, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.get(0)?.extensions?.size ?: 0)
+    }
+
+    @DisplayName("Read track-2023-03-09--21-10-54.gpx")
+    @Test
+    fun readTestGpx_v_1_10_3() {
+        val gpxType = GpxType.read(javaClass.classLoader.getResource("track-2023-03-09--21-10-54.gpx").openStream())
+        Assertions.assertEquals(4, gpxType.trk?.get(0)?.trkseg?.get(0)?.trkpt?.get(0)?.extensions?.size ?: 0)
+    }
+
+    @DisplayName("test xml signature")
+    @Test
+    fun testXmlSignature() {
+        val gpx = """<gpx
+            xmlns="http://www.topografix.com/GPX/1/1"
+            version="1.1"
+            creator="me.bvn13.sdk.android.gpx"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+            <time>2022-09-24T15:04:00+03:00</time>
+            <metadata>
+            <name>test name</name>
+            <desc></desc>
+            <author>
+            <name></name>
+            </author>
+            </metadata>
+            <trk>
+            <name>track1</name>
+            <trkseg>
+            <trkpt lat="123.0" lon="321.0">
+            </trkpt>
+            </trkseg>
+            </trk>
+            </gpx>"""
+        GpxType.read("""
+            <?xml version="1.0" standalone="yes" encoding="UTF-8"?>
+            $gpx
+            """.trim()
+            .lineSequence()
+            .map {
+                it.trim()
+            }
+            .joinToString("\n")
+            .byteInputStream()
+        )
+        GpxType.read("""
+            <?xml version="1.0" encoding="UTF-8"?>
+            $gpx
+            """.trim()
+            .lineSequence()
+            .map {
+                it.trim()
+            }
+            .joinToString("\n")
+            .byteInputStream()
+        )
+        GpxType.read(
+            """
+            <?xml version="1.0"?>
+            $gpx
+            """.trim()
+                .lineSequence()
+                .map {
+                    it.trim()
+                }
+                .joinToString("\n")
+                .byteInputStream()
+        )
+        GpxType.read(
+            """
+            <?xml?>
+            $gpx
+            """.trim()
+                .lineSequence()
+                .map {
+                    it.trim()
+                }
+                .joinToString("\n")
+                .byteInputStream()
+        )
     }
 }

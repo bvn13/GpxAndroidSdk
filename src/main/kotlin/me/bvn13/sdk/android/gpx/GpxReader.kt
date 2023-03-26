@@ -33,9 +33,7 @@ class GpxReader {
             .trim()
             .replace("'", "\"")
             .replace(" ?", "?")
-        if (GpxConstant.HEADER != signaturePrepared
-            && GpxConstant.HEADER_EXTENDED != signaturePrepared
-        ) {
+        if (!signaturePrepared.startsWith("<?xml") || !signaturePrepared.endsWith("?>")) {
             throw IllegalArgumentException("Wrong xml signature!")
         }
         return readBeginning(dis, Container.empty(container.position))
